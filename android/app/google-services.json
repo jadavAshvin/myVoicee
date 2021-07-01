@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "338558024128",
+    "project_id": "voicee-android",
+    "storage_bucket": "voicee-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338558024128:android:f76c53bb0629edfc977025",
+        "android_client_info": {
+          "package_name": "com.social.my_voicee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "338558024128-h9tk6e4cjfeqvvc6lmop9bhm7d9cskqp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.social.my_voicee",
+            "certificate_hash": "b8bf5bb245899717a189bcb60e57e994e4c82691"
+          }
+        },
+        {
+          "client_id": "338558024128-tvdnp4clsguiipa3ejpthi9gcn3rkmfp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.social.my_voicee",
+            "certificate_hash": "6fc0821b8621cc570c74c195c26efc711a954400"
+          }
+        },
+        {
+          "client_id": "338558024128-ghpa3a7aahln0ch2qi4589b43vaigcm9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnXTuN9IxoLNWlvA549a2QjiijIhurf38"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "338558024128-ghpa3a7aahln0ch2qi4589b43vaigcm9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
