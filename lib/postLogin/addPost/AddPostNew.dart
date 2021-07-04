@@ -932,15 +932,30 @@ class _AddPostNewState extends State<AddPostNew> with TickerProviderStateMixin {
         isRecordingStarted = true;
         isShowRecordingText = true;
         _recording = current;
-        _recording.duration.inMinutes > 59 ?? _recorder.stop();
+        _recording.duration.inSeconds > 59 ?? _recorder.stop();
       });
-
+    Future.delayed(Duration(seconds: 60), () {
+      print("59 Seconds");
+      _t.cancel();
+      isShowRecordingText = false;
+      if (_recording.status == RecordingStatus.Recording) {
+        _recorder?.pause();
+        _recorder?.stop();
+      } else if (_recording.status == RecordingStatus.Paused) {
+        _recorder?.stop();
+      }
+      uploadRecorderFile();
+    });
     _t = Timer.periodic(Duration(seconds: 1), (Timer t) async {
       var current = await _recorder.current();
       if (mounted) {
         setState(() {
           _recording = current;
           _t = t;
+          // if (_recording.duration.inSeconds > 59) {
+          //   _t.cancel();
+          //   t.cancel();
+          // }
         });
       } else {
         _t.cancel();
