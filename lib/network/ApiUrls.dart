@@ -32,6 +32,7 @@ const String getPostSharedBy = 'user/users-shared-post/';
 
 // ****************** Profile Related Api **************** //
 const String userProfile = 'user/profile';
+const String userChannel = 'user/channel-details/';
 const String userProfileInfo = 'user/update-profile';
 const String uploadGeneral = 'user/upload-general';
 const String sharePost = 'user/share-post/';

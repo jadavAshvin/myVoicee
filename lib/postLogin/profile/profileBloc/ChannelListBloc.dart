@@ -11,18 +11,18 @@ import 'package:my_voicee/models/UserResponse.dart';
 import 'package:my_voicee/models/commonResponse/CommonpiResponse.dart';
 import 'package:my_voicee/models/errorResponse/error_reponse.dart';
 import 'package:my_voicee/network/api_callbacks.dart';
-import 'package:my_voicee/postLogin/profile/profileBloc/ProfileDataRepo.dart';
+import 'package:my_voicee/postLogin/profile/profileBloc/ChannelDataRepo.dart';
 import 'package:my_voicee/utils/Utility.dart';
 import 'package:rxdart/subjects.dart';
 
-class ProfileBloc implements ApiCallback {
+class ChannelListBloc implements ApiCallback {
   final StreamController apiResponse;
   final StreamController apiResponseData;
 
-  ProfileDataRepo _dataProvider;
+  ChannelDataRepo _dataProvider;
 
-  ProfileBloc(this.apiResponseData, this.apiResponse) {
-    _dataProvider = ProfileDataRepo(this);
+  ChannelListBloc(this.apiResponseData, this.apiResponse) {
+    _dataProvider = ChannelDataRepo(this);
   }
 
   StreamController<bool> _progressLoaderController = BehaviorSubject<bool>();
@@ -219,9 +219,9 @@ class ProfileBloc implements ApiCallback {
     }
   }
 
-  void getUserProfile(BuildContext context) {
+  void getUserProfile(BuildContext context, userIdChannel) {
     showProgressLoader(true);
-    _dataProvider.onGetUserProfile(context);
+    _dataProvider.onGetUserProfile(context, userIdChannel);
   }
 
   void callApiGetAllPosts(BuildContext context, String userId, int page) {
