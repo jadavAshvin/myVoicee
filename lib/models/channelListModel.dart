@@ -2,7 +2,6 @@
 //
 //     final channelListModel = channelListModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 ChannelListModel channelListModelFromJson(String str) => ChannelListModel.fromJson(json.decode(str));
@@ -11,83 +10,206 @@ String channelListModelToJson(ChannelListModel data) => json.encode(data.toJson(
 
 class ChannelListModel {
   ChannelListModel({
-    @required this.status,
-    @required this.message,
-    @required this.showMsg,
-    @required this.response,
+    this.status,
+    this.showMsg,
+    this.message,
+    this.response,
   });
 
   bool status;
-  String message;
   int showMsg;
-  Response response;
+  String message;
+  List<ChannelPost> response;
 
   factory ChannelListModel.fromJson(Map<String, dynamic> json) => ChannelListModel(
         status: json["status"],
-        message: json["message"],
         showMsg: json["show_msg"],
-        response: Response.fromJson(json["response"]),
+        message: json["message"],
+        response: List<ChannelPost>.from(json["response"].map((x) => ChannelPost.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "status": status,
-        "message": message,
         "show_msg": showMsg,
-        "response": response.toJson(),
+        "message": message,
+        "response": List<dynamic>.from(response.map((x) => x.toJson())),
       };
 }
 
-class Response {
-  Response({
-    @required this.img,
-    @required this.isDeleted,
-    @required this.id,
-    @required this.title,
-    @required this.topicId,
-    @required this.description,
-    @required this.type,
-    @required this.userId,
-    @required this.createdAt,
-    @required this.v,
-    @required this.topic,
-    @required this.user,
-    @required this.responseId,
+class ChannelPost {
+  ChannelPost(
+      {this.id,
+      this.hashTag,
+      this.isCampaign,
+      this.campaignDesc,
+      this.campaignImg,
+      this.nLikes,
+      this.nShares,
+      this.nDislikes,
+      this.nComments,
+      this.isDeleted,
+      this.isActive,
+      this.channelId,
+      this.topicId,
+      this.text,
+      this.audio,
+      this.language,
+      this.audioDuration,
+      this.userId,
+      this.createdAt,
+      this.channel,
+      this.userLiked,
+      this.userShared,
+      this.userComment,
+      this.userDislike,
+      this.user,
+      this.isLiked,
+      this.isShared,
+      this.isCommented,
+      this.isDisliked,
+      this.is_play = false,
+      this.duration});
+
+  String id;
+  String hashTag;
+  Duration duration;
+  bool isCampaign;
+  String campaignDesc;
+  String campaignImg;
+  int nLikes;
+  int nShares;
+  int nDislikes;
+  int nComments;
+  bool isDeleted;
+  bool isActive;
+  List<String> channelId;
+  List<String> topicId;
+  String text;
+  String audio;
+  String language;
+  int audioDuration;
+  bool is_play;
+
+  String userId;
+  dynamic createdAt;
+  List<Channel> channel;
+  List<String> userLiked;
+  List<String> userShared;
+  List<dynamic> userComment;
+  List<dynamic> userDislike;
+  User user;
+  bool isLiked;
+  bool isShared;
+  bool isCommented;
+  bool isDisliked;
+
+  factory ChannelPost.fromJson(Map<String, dynamic> json) => ChannelPost(
+        id: json["_id"],
+        hashTag: json["hash_tag"],
+        isCampaign: json["is_campaign"],
+        campaignDesc: json["campaign_desc"],
+        campaignImg: json["campaign_img"],
+        nLikes: json["n_likes"],
+        nShares: json["n_shares"],
+        nDislikes: json["n_dislikes"],
+        nComments: json["n_comments"],
+        isDeleted: json["is_deleted"],
+        isActive: json["is_active"],
+        channelId: List<String>.from(json["channel_id"].map((x) => x)),
+        topicId: List<String>.from(json["topic_id"].map((x) => x)),
+        text: json["text"],
+        audio: json["audio"],
+        language: json["language"],
+        audioDuration: json["audio_duration"],
+        userId: json["user_id"],
+        createdAt: json["created_at"],
+        channel: List<Channel>.from(json["channel"].map((x) => Channel.fromJson(x))),
+        userLiked: List<String>.from(json["user_liked"].map((x) => x)),
+        userShared: List<String>.from(json["user_shared"].map((x) => x)),
+        userComment: List<dynamic>.from(json["user_comment"].map((x) => x)),
+        userDislike: List<dynamic>.from(json["user_dislike"].map((x) => x)),
+        user: User.fromJson(json["user"]),
+        isLiked: json["is_liked"],
+        isShared: json["is_shared"],
+        isCommented: json["is_commented"],
+        isDisliked: json["is_disliked"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "hash_tag": hashTag,
+        "is_campaign": isCampaign,
+        "campaign_desc": campaignDesc,
+        "campaign_img": campaignImg,
+        "n_likes": nLikes,
+        "n_shares": nShares,
+        "n_dislikes": nDislikes,
+        "n_comments": nComments,
+        "is_deleted": isDeleted,
+        "is_active": isActive,
+        "channel_id": List<dynamic>.from(channelId.map((x) => x)),
+        "topic_id": List<dynamic>.from(topicId.map((x) => x)),
+        "text": text,
+        "audio": audio,
+        "language": language,
+        "audio_duration": audioDuration,
+        "user_id": userId,
+        "created_at": createdAt.toIso8601String(),
+        "channel": List<dynamic>.from(channel.map((x) => x.toJson())),
+        "user_liked": List<dynamic>.from(userLiked.map((x) => x)),
+        "user_shared": List<dynamic>.from(userShared.map((x) => x)),
+        "user_comment": List<dynamic>.from(userComment.map((x) => x)),
+        "user_dislike": List<dynamic>.from(userDislike.map((x) => x)),
+        "user": user.toJson(),
+        "is_liked": isLiked,
+        "is_shared": isShared,
+        "is_commented": isCommented,
+        "is_disliked": isDisliked,
+      };
+}
+
+class Channel {
+  Channel({
+    this.id,
+    this.img,
+    this.isDeleted,
+    this.title,
+    this.topicId,
+    this.description,
+    this.type,
+    this.userId,
+    this.createdAt,
+    this.v,
   });
 
+  String id;
   String img;
   bool isDeleted;
-  String id;
   String title;
   String topicId;
   String description;
   int type;
   String userId;
-  DateTime createdAt;
+  dynamic createdAt;
   int v;
-  Topic topic;
-  User user;
-  String responseId;
 
-  factory Response.fromJson(Map<String, dynamic> json) => Response(
+  factory Channel.fromJson(Map<String, dynamic> json) => Channel(
+        id: json["_id"],
         img: json["img"],
         isDeleted: json["is_deleted"],
-        id: json["_id"],
         title: json["title"],
         topicId: json["topic_id"],
         description: json["description"],
         type: json["type"],
         userId: json["user_id"],
-        createdAt: DateTime.parse(json["created_at"]),
+        createdAt: json["created_at"],
         v: json["__v"],
-        topic: Topic.fromJson(json["topic"]),
-        user: User.fromJson(json["user"]),
-        responseId: json["id"],
       );
 
   Map<String, dynamic> toJson() => {
+        "_id": id,
         "img": img,
         "is_deleted": isDeleted,
-        "_id": id,
         "title": title,
         "topic_id": topicId,
         "description": description,
@@ -95,212 +217,41 @@ class Response {
         "user_id": userId,
         "created_at": createdAt.toIso8601String(),
         "__v": v,
-        "topic": topic.toJson(),
-        "user": user.toJson(),
-        "id": responseId,
-      };
-}
-
-class Topic {
-  Topic({
-    @required this.img,
-    @required this.isDeleted,
-    @required this.nPosts,
-    @required this.id,
-    @required this.title,
-    @required this.createdAt,
-    @required this.v,
-  });
-
-  String img;
-  bool isDeleted;
-  int nPosts;
-  String id;
-  String title;
-  DateTime createdAt;
-  int v;
-
-  factory Topic.fromJson(Map<String, dynamic> json) => Topic(
-        img: json["img"],
-        isDeleted: json["is_deleted"],
-        nPosts: json["n_posts"],
-        id: json["_id"],
-        title: json["title"],
-        createdAt: DateTime.parse(json["created_at"]),
-        v: json["__v"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "img": img,
-        "is_deleted": isDeleted,
-        "n_posts": nPosts,
-        "_id": id,
-        "title": title,
-        "created_at": createdAt.toIso8601String(),
-        "__v": v,
       };
 }
 
 class User {
   User({
-    @required this.username,
-    @required this.audio,
-    @required this.mobileVerified,
-    @required this.isPublisher,
-    @required this.dp,
-    @required this.postLiked,
-    @required this.postDisliked,
-    @required this.postShared,
-    @required this.topics,
-    @required this.isWorking,
-    @required this.isAdmin,
-    @required this.fbId,
-    @required this.gmailId,
-    @required this.appleId,
-    @required this.twId,
-    @required this.nPosts,
-    @required this.isBlocked,
-    @required this.isApproved,
-    @required this.id,
-    @required this.name,
-    @required this.mobile,
-    @required this.email,
-    @required this.createdAt,
-    @required this.v,
-    @required this.bio,
-    @required this.concentration,
-    @required this.degreeType,
-    @required this.employment,
-    @required this.graduationYear,
-    @required this.location,
-    @required this.schoolUniversity,
-    @required this.startYear,
-    @required this.updatedAt,
-    @required this.countryId,
-    @required this.districtId,
-    @required this.stateId,
-    @required this.tempMobile,
-    @required this.userId,
+    this.name,
+    this.username,
+    this.dp,
+    this.bio,
+    this.id,
+    this.isPublisher,
   });
 
-  String username;
-  String audio;
-  bool mobileVerified;
-  bool isPublisher;
-  String dp;
-  List<dynamic> postLiked;
-  List<dynamic> postDisliked;
-  List<dynamic> postShared;
-  List<String> topics;
-  bool isWorking;
-  bool isAdmin;
-  String fbId;
-  String gmailId;
-  String appleId;
-  String twId;
-  int nPosts;
-  bool isBlocked;
-  bool isApproved;
-  String id;
   String name;
-  int mobile;
-  String email;
-  DateTime createdAt;
-  int v;
+  String username;
+  String dp;
   String bio;
-  String concentration;
-  String degreeType;
-  String employment;
-  DateTime graduationYear;
-  String location;
-  String schoolUniversity;
-  DateTime startYear;
-  DateTime updatedAt;
-  String countryId;
-  String districtId;
-  String stateId;
-  int tempMobile;
-  String userId;
+  String id;
+  bool isPublisher;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        username: json["username"],
-        audio: json["audio"],
-        mobileVerified: json["mobile_verified"],
-        isPublisher: json["is_publisher"],
-        dp: json["dp"],
-        postLiked: List<dynamic>.from(json["post_liked"].map((x) => x)),
-        postDisliked: List<dynamic>.from(json["post_disliked"].map((x) => x)),
-        postShared: List<dynamic>.from(json["post_shared"].map((x) => x)),
-        topics: List<String>.from(json["topics"].map((x) => x)),
-        isWorking: json["is_working"],
-        isAdmin: json["is_admin"],
-        fbId: json["fb_id"],
-        gmailId: json["gmail_id"],
-        appleId: json["apple_id"],
-        twId: json["tw_id"],
-        nPosts: json["n_posts"],
-        isBlocked: json["is_blocked"],
-        isApproved: json["is_approved"],
-        id: json["_id"],
         name: json["name"],
-        mobile: json["mobile"],
-        email: json["email"],
-        createdAt: DateTime.parse(json["created_at"]),
-        v: json["__v"],
+        username: json["username"],
+        dp: json["dp"],
         bio: json["bio"],
-        concentration: json["concentration"],
-        degreeType: json["degree_type"],
-        employment: json["employment"],
-        graduationYear: DateTime.parse(json["graduation_year"]),
-        location: json["location"],
-        schoolUniversity: json["school_university"],
-        startYear: DateTime.parse(json["start_year"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        countryId: json["country_id"],
-        districtId: json["district_id"],
-        stateId: json["state_id"],
-        tempMobile: json["temp_mobile"],
-        userId: json["id"],
+        id: json["_id"],
+        isPublisher: json["is_publisher"],
       );
 
   Map<String, dynamic> toJson() => {
-        "username": username,
-        "audio": audio,
-        "mobile_verified": mobileVerified,
-        "is_publisher": isPublisher,
-        "dp": dp,
-        "post_liked": List<dynamic>.from(postLiked.map((x) => x)),
-        "post_disliked": List<dynamic>.from(postDisliked.map((x) => x)),
-        "post_shared": List<dynamic>.from(postShared.map((x) => x)),
-        "topics": List<dynamic>.from(topics.map((x) => x)),
-        "is_working": isWorking,
-        "is_admin": isAdmin,
-        "fb_id": fbId,
-        "gmail_id": gmailId,
-        "apple_id": appleId,
-        "tw_id": twId,
-        "n_posts": nPosts,
-        "is_blocked": isBlocked,
-        "is_approved": isApproved,
-        "_id": id,
         "name": name,
-        "mobile": mobile,
-        "email": email,
-        "created_at": createdAt.toIso8601String(),
-        "__v": v,
+        "username": username,
+        "dp": dp,
         "bio": bio,
-        "concentration": concentration,
-        "degree_type": degreeType,
-        "employment": employment,
-        "graduation_year": graduationYear.toIso8601String(),
-        "location": location,
-        "school_university": schoolUniversity,
-        "start_year": startYear.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "country_id": countryId,
-        "district_id": districtId,
-        "state_id": stateId,
-        "temp_mobile": tempMobile,
-        "id": userId,
+        "_id": id,
+        "is_publisher": isPublisher,
       };
 }

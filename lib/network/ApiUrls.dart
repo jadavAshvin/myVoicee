@@ -43,6 +43,10 @@ const String publicProfile = 'user/fetch-public-profile';
 const String searchResults = 'user/search-user';
 const String reportUsers = 'user/report-user';
 
+// ****************** Channel Related Api **************** //
+const String channelDetail = 'user/channel-details/';
+const String channelPosts = 'user/post?channelId=';
+
 // ****************** Topics Related Api **************** //
 const String topics = 'user/topic';
 const String saveTopics = 'user/choose-topics';

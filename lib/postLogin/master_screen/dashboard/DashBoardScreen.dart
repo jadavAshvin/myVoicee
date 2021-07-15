@@ -68,11 +68,7 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen>
-    with
-        DashboardCallBack,
-        ShareCallBack,
-        WidgetsBindingObserver,
-        AutomaticKeepAliveClientMixin<DashBoardScreen> {
+    with DashboardCallBack, ShareCallBack, WidgetsBindingObserver, AutomaticKeepAliveClientMixin<DashBoardScreen> {
   @override
   bool get wantKeepAlive => false;
 
@@ -119,8 +115,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     getStringDataLocally(key: userData).then((value) {
       userDataBean = UserData.fromJson(jsonDecode(value));
     });
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
     getFirebaseToken();
     _itemCallBacks = this;
     _shareCallBack = this;
@@ -130,13 +125,10 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     _subscribeToApiResponse();
     _bloc.getAllTopics(widget.menuScreenContext);
     _scrollController.addListener(() {
-      if (_scrollController.position.maxScrollExtent ==
-          _scrollController.position.pixels) {
+      if (_scrollController.position.maxScrollExtent == _scrollController.position.pixels) {
         if (!isLoading) {
           isLoading = !isLoading;
-          if (!lastPage)
-            _bloc.callApiGetAllPosts(
-                widget.menuScreenContext, page, _filterIds);
+          if (!lastPage) _bloc.callApiGetAllPosts(widget.menuScreenContext, page, _filterIds);
         }
       }
     });
@@ -221,9 +213,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                           backgroundColor: Color(0xFFf0f0f0),
                           checkmarkColor: Colors.white,
                           label: Text(
-                            !selectedTopic.contains(_choices[index])
-                                ? _choices[index].title + "   +"
-                                : _choices[index].title + "   x",
+                            !selectedTopic.contains(_choices[index]) ? _choices[index].title + "   +" : _choices[index].title + "   x",
                           ),
                           showCheckmark: false,
                           selected: selectedTopic.contains(_choices[index]),
@@ -231,9 +221,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                           labelPadding: EdgeInsets.all(3.0),
                           selectedShadowColor: colorWhite,
                           labelStyle: TextStyle(
-                              color: !selectedTopic.contains(_choices[index])
-                                  ? Colors.black87
-                                  : colorWhite,
+                              color: !selectedTopic.contains(_choices[index]) ? Colors.black87 : colorWhite,
                               fontWeight: FontWeight.w400,
                               fontSize: fit.t(12.0),
                               fontFamily: "Roboto"),
@@ -246,16 +234,14 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                             setState(
                               () {
                                 if (selected) {
-                                  if (!selectedTopic.contains(_choices[index]))
-                                    selectedTopic.add(_choices[index]);
+                                  if (!selectedTopic.contains(_choices[index])) selectedTopic.add(_choices[index]);
                                   _filterIds.clear();
                                   selectedTopic.forEach((element) {
                                     _filterIds.add(element.id);
                                   });
                                   page = 0;
                                   lastPage = false;
-                                  _bloc.callApiGetAllPosts(
-                                      widget.menuScreenContext, 0, _filterIds);
+                                  _bloc.callApiGetAllPosts(widget.menuScreenContext, 0, _filterIds);
                                   if (mounted) setState(() {});
                                 } else {
                                   if (selectedTopic.contains(_choices[index]))
@@ -270,8 +256,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                   });
                                   page = 0;
                                   lastPage = false;
-                                  _bloc.callApiGetAllPosts(
-                                      widget.menuScreenContext, 0, _filterIds);
+                                  _bloc.callApiGetAllPosts(widget.menuScreenContext, 0, _filterIds);
                                   if (mounted) setState(() {});
                                 }
                               },
@@ -351,11 +336,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
               Container(
                 child: Text(
                   "Post...",
-                  style: TextStyle(
-                      color: colorBlack,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w400,
-                      fontSize: fit.t(18.0)),
+                  style: TextStyle(color: colorBlack, fontFamily: 'Roboto', fontWeight: FontWeight.w400, fontSize: fit.t(18.0)),
                 ),
               ),
             ],
@@ -456,11 +437,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
             lastPage = true;
           }
           if (allPosts.length > 0) {
-            if (allPosts.firstWhere((element) => element.id == null,
-                    orElse: null) !=
-                null) {
-              allPosts
-                  .remove(allPosts.firstWhere((element) => element.id == null));
+            if (allPosts.firstWhere((element) => element.id == null, orElse: null) != null) {
+              allPosts.remove(allPosts.firstWhere((element) => element.id == null));
               allPosts.add(AllPostResponse());
             }
           }
@@ -501,9 +479,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         }
         TopAlert.showAlert(widget.menuScreenContext, data.message, false);
       } else if (data is OtherUserResponse) {
-        pushNewScreen(widget.menuScreenContext,
-            screen: OtherProfileScreen(profileData: data.response),
-            withNavBar: false);
+        pushNewScreen(widget.menuScreenContext, screen: OtherProfileScreen(profileData: data.response), withNavBar: false);
       } else if (data is CommonApiReponse) {
         TopAlert.showAlert(widget.menuScreenContext, data.message, false);
         _bloc.getAllTopics(widget.menuScreenContext);
@@ -513,12 +489,10 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         if (data.errorMessage == 'Check your internet connection.') {
           pushNamedIfNotCurrent(widget.menuScreenContext, '/noInternet');
         } else {
-          TopAlert.showAlert(
-              _scaffoldKey.currentState.context, data.errorMessage, true);
+          TopAlert.showAlert(_scaffoldKey.currentState.context, data.errorMessage, true);
         }
       } else if (data is Exception) {
-        TopAlert.showAlert(_scaffoldKey.currentState.context,
-            'Oops, Something went wrong please try again later.', true);
+        TopAlert.showAlert(_scaffoldKey.currentState.context, 'Oops, Something went wrong please try again later.', true);
       }
     }, onError: (error) {
       if (error is CustomError) {
@@ -552,6 +526,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                       parentKey: widget.myKey,
                       isShown: isShownTut,
                       player: player,
+                      menuContext: widget.menuScreenContext,
                       isTutShown: _isShown,
                       data: itemList[index],
                       callBack: _itemCallBacks);
@@ -565,14 +540,13 @@ class _DashBoardScreenState extends State<DashBoardScreen>
 
   @override
   void onClickItem(int pos) {
-    if (pos != -1) {
-      if (userDataBean?.id == allPosts[pos].user.id) {
-        widget.controller(3);
-      } else {
-        _bloc.callApiOtherUserProfile(
-            widget.menuScreenContext, allPosts[pos].user.id);
-      }
-    }
+    // if (pos != -1) {
+    //   if (userDataBean?.id == allPosts[pos].user.id) {
+    //     widget.controller(3);
+    //   } else {
+    //     _bloc.callApiOtherUserProfile(widget.menuScreenContext, allPosts[pos].user.id);
+    //   }
+    // }
   }
 
   @override
@@ -580,8 +554,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     if (pos != -1) {
       FATracker tracker = FATracker();
       tracker.track(FAEvents(eventName: POST_DISLIKE_EVENT, attrs: null));
-      _bloc.callApiUpVoteDownVote(
-          widget.menuScreenContext, allPosts[pos].id, pos, "2");
+      _bloc.callApiUpVoteDownVote(widget.menuScreenContext, allPosts[pos].id, pos, "2");
     }
   }
 
@@ -615,8 +588,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
       int result;
       if (allPosts[pos].duration.inSeconds > 0) {
         _duration = allPosts[pos].duration;
-        result = await player.play(allPosts[pos].audio,
-            isLocal: false, stayAwake: true, respectSilence: false);
+        result = await player.play(allPosts[pos].audio, isLocal: false, stayAwake: true, respectSilence: false);
         if (result == 1) {
           player.pause();
           player.seek(_duration);
@@ -627,8 +599,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         await player.pause();
         await player.stop();
         await player.release();
-        result = await player.play(allPosts[pos].audio,
-            isLocal: false, stayAwake: true, respectSilence: false);
+        result = await player.play(allPosts[pos].audio, isLocal: false, stayAwake: true, respectSilence: false);
       }
 
       if (result == 1) {
@@ -673,8 +644,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   void onReplyClick(int pos) async {
     var result = await Navigator.push(
       widget.menuScreenContext,
-      MaterialPageRoute(
-          builder: (context) => ReplyPageList(data: allPosts[pos])),
+      MaterialPageRoute(builder: (context) => ReplyPageList(data: allPosts[pos])),
     );
     if (result != null) {
       if (result) {
@@ -688,10 +658,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     allPosts[pos].is_shared = true;
     showModalBottomSheet(
         context: widget.menuScreenContext,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.0),
-                topRight: Radius.circular(30.0))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0))),
         builder: (BuildContext bc) {
           return Container(
             color: Colors.transparent,
@@ -709,8 +676,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     if (pos != -1) {
       FATracker tracker = FATracker();
       tracker.track(FAEvents(eventName: POST_LIKE_EVENT, attrs: null));
-      _bloc.callApiUpVoteDownVote(
-          widget.menuScreenContext, allPosts[pos].id, pos, "1");
+      _bloc.callApiUpVoteDownVote(widget.menuScreenContext, allPosts[pos].id, pos, "1");
     }
   }
 
@@ -720,11 +686,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
       context: widget.menuScreenContext,
       builder: (context) {
         return AlertDialog(
-          titleTextStyle: TextStyle(
-              fontFamily: "Roboto",
-              fontSize: fit.t(14.5),
-              color: Colors.black,
-              fontWeight: FontWeight.normal),
+          titleTextStyle: TextStyle(fontFamily: "Roboto", fontSize: fit.t(14.5), color: Colors.black, fontWeight: FontWeight.normal),
           title: GestureDetector(
             onTap: () => onClickStats(pos),
             child: Text(
@@ -736,11 +698,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
             onTap: () => onClickReport(pos),
             child: Text(
               "Report Post",
-              style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: fit.t(14.0),
-                  color: Colors.black,
-                  fontWeight: FontWeight.normal),
+              style: TextStyle(fontFamily: "Roboto", fontSize: fit.t(14.0), color: Colors.black, fontWeight: FontWeight.normal),
               textAlign: TextAlign.start,
             ),
           ),
@@ -774,8 +732,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     allPosts[pos].is_shared = true;
     allPosts[pos].n_shares += 1;
     if (mounted) setState(() {});
-    SocialShare.shareOptions("${allPosts[pos].text}\n\n${allPosts[pos].audio}")
-        .then((data) {});
+    SocialShare.shareOptions("${allPosts[pos].text}\n\n${allPosts[pos].audio}").then((data) {});
     _bloc.callApiSharePost(widget.menuScreenContext, allPosts[pos].id);
   }
 
@@ -784,8 +741,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     allPosts[pos].is_shared = true;
     allPosts[pos].n_shares += 1;
     if (mounted) setState(() {});
-    SocialShare.shareOptions("${allPosts[pos].text}\n\n${allPosts[pos].audio}")
-        .then((data) {});
+    SocialShare.shareOptions("${allPosts[pos].text}\n\n${allPosts[pos].audio}").then((data) {});
     _bloc.callApiSharePost(widget.menuScreenContext, allPosts[pos].id);
   }
 
@@ -795,9 +751,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     allPosts[pos].n_shares += 1;
     if (mounted) setState(() {});
     SocialShare.shareTwitter("${allPosts[pos].text}",
-            hashtags: ["voicee", "audio", "text", "replies"],
-            url: "${allPosts[pos].audio}",
-            trailingText: "")
+            hashtags: ["voicee", "audio", "text", "replies"], url: "${allPosts[pos].audio}", trailingText: "")
         .then((data) {});
     _bloc.callApiSharePost(widget.menuScreenContext, allPosts[pos].id);
   }
@@ -811,9 +765,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     var request = await HttpClient().getUrl(Uri.parse(allPosts[pos].audio));
     var response = await request.close();
     Uint8List bytes = await consolidateHttpClientResponseBytes(response);
-    Share.file('${allPosts[pos].text}', 'voicee_${allPosts[pos].id}.wav', bytes,
-            'audio/wav')
-        .then((value) {
+    Share.file('${allPosts[pos].text}', 'voicee_${allPosts[pos].id}.wav', bytes, 'audio/wav').then((value) {
       _bloc.showProgressLoader(false);
     });
     _bloc.callApiSharePost(widget.menuScreenContext, allPosts[pos].id);
@@ -829,8 +781,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                 if (value.isNotEmpty) {
                   Map<String, dynamic> mapName = Map();
                   mapName.putIfAbsent("token", () => onToken);
-                  mapName.putIfAbsent(
-                      "platform", () => Platform.isAndroid ? "ANDROID" : "IOS");
+                  mapName.putIfAbsent("platform", () => Platform.isAndroid ? "ANDROID" : "IOS");
                   mapName.putIfAbsent("device_id", () => value);
                   _bloc.updatedFirebaseToken(mapName, widget.menuScreenContext);
                 }
@@ -864,8 +815,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     Navigator.of(widget.menuScreenContext).pop();
     Navigator.push(
       widget.menuScreenContext,
-      MaterialPageRoute(
-          builder: (context) => ReActionsScreen(data: allPosts[pos])),
+      MaterialPageRoute(builder: (context) => ReActionsScreen(data: allPosts[pos])),
     );
   }
 
@@ -874,10 +824,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
       setState(() {
         if (position != null) {
           _currentPosition = position;
-          writeStringDataLocally(
-              key: latitude, value: _currentPosition.latitude.toString());
-          writeStringDataLocally(
-              key: longitude, value: _currentPosition.longitude.toString());
+          writeStringDataLocally(key: latitude, value: _currentPosition.latitude.toString());
+          writeStringDataLocally(key: longitude, value: _currentPosition.longitude.toString());
         }
       });
     }, onError: (map) {
@@ -902,16 +850,13 @@ class _DashBoardScreenState extends State<DashBoardScreen>
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
     }
 
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse &&
-          permission != LocationPermission.always) {
-        return Future.error(
-            'Location permissions are denied (actual value: $permission).');
+      if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
+        return Future.error('Location permissions are denied (actual value: $permission).');
       }
     }
 
@@ -919,8 +864,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   }
 
   void _searchNavigate() async {
-    var result = await Navigator.push(widget.menuScreenContext,
-        MaterialPageRoute(builder: (context) => SearchUsers()));
+    var result = await Navigator.push(widget.menuScreenContext, MaterialPageRoute(builder: (context) => SearchUsers()));
     if (result != null) {
       if (result) {
         widget.controller(3);

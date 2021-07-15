@@ -13,15 +13,15 @@ import 'package:my_voicee/constants/app_constants.dart';
 import 'package:my_voicee/constants/app_images_path.dart';
 import 'package:my_voicee/customWidget/ExpandableText.dart';
 import 'package:my_voicee/customWidget/super_tooltip.dart';
-import 'package:my_voicee/models/GetAllPostsResponse.dart';
+import 'package:my_voicee/models/channelListModel.dart';
 import 'package:my_voicee/postLogin/profile/ChannelList/ChannelListScreen.dart';
 import 'package:my_voicee/utils/Utility.dart';
 import 'package:my_voicee/utils/date_formatter.dart';
 
-class DashBoardListItem extends StatefulWidget {
+class ChannelItemPlay extends StatefulWidget {
   final int pos;
   final dynamic from;
-  final AllPostResponse data;
+  final ChannelPost data;
   final DashboardCallBack callBack;
   final FmFit fit;
   final AudioPlayer player;
@@ -30,20 +30,20 @@ class DashBoardListItem extends StatefulWidget {
   final GlobalKey parentKey;
   final BuildContext menuContext;
 
-  DashBoardListItem(
+  ChannelItemPlay(
       {this.fit, this.pos, this.parentKey, this.from, this.data, this.callBack, this.player, this.isTutShown, this.isShown, this.menuContext});
 
   @override
-  _DashBoardListItemState createState() => _DashBoardListItemState();
+  _ChannelItemPlayState createState() => _ChannelItemPlayState();
 }
 
-class _DashBoardListItemState extends State<DashBoardListItem> {
+class _ChannelItemPlayState extends State<ChannelItemPlay> {
   bool isVisualizer = false;
   SuperTooltip tooltip;
-  GlobalKey _key1 = GlobalKey<_DashBoardListItemState>();
-  GlobalKey _key2 = GlobalKey<_DashBoardListItemState>();
-  GlobalKey _key3 = GlobalKey<_DashBoardListItemState>();
-  GlobalKey _key4 = GlobalKey<_DashBoardListItemState>();
+  GlobalKey _key1 = GlobalKey<_ChannelItemPlayState>();
+  GlobalKey _key2 = GlobalKey<_ChannelItemPlayState>();
+  GlobalKey _key3 = GlobalKey<_ChannelItemPlayState>();
+  GlobalKey _key4 = GlobalKey<_ChannelItemPlayState>();
 
   @override
   void initState() {
@@ -97,7 +97,7 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                           flex: 20,
                           child: Row(
                             children: <Widget>[
-                              widget.data.is_campaign ?? false
+                              widget.data.isCampaign ?? false
                                   ? Container(
                                       width: widget.fit.t(16.0),
                                       height: widget.fit.t(14.0),
@@ -215,7 +215,7 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                                         direction: Axis.vertical,
                                         children: [
                                           GestureDetector(
-                                            onTap: () => widget.data.is_campaign ?? false ? {} : widget.callBack.onClickItem(widget.pos),
+                                            onTap: () => widget.data.isCampaign ?? false ? {} : widget.callBack.onClickItem(widget.pos),
                                             child: Container(
                                               width:
                                                   Platform.isIOS ? MediaQuery.of(context).size.width / 1.7 : MediaQuery.of(context).size.width / 1.55,
@@ -234,7 +234,7 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                                                             ),
                                                           ),
                                                         )
-                                                      : widget.data.user.is_publisher ?? false
+                                                      : widget.data.user.isPublisher ?? false
                                                           ? Row(
                                                               children: [
                                                                 Text(
@@ -280,7 +280,7 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                                                       children: <TextSpan>[
                                                         TextSpan(
                                                             text:
-                                                                '${timeAgo(getDateTimeStamp(widget.data.created_at, "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'"))}',
+                                                                '${timeAgo(getDateTimeStamp(widget.data.createdAt, "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'"))}',
                                                             style: TextStyle(
                                                                 fontFamily: 'Roboto',
                                                                 fontSize: widget.fit.t(8.0),
@@ -368,13 +368,13 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                     Container(
                       padding: EdgeInsets.only(left: widget.fit.t(4.0), right: widget.fit.t(4.0)),
                       child: Text(
-                        '${widget.data.hash_tag ?? ""}',
+                        '${widget.data.hashTag ?? ""}',
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontFamily: 'Roboto', fontSize: widget.fit.t(12.0), fontWeight: FontWeight.normal, color: appColor),
                         textAlign: TextAlign.justify,
                       ),
                     ),
-                    widget.data.hash_tag != null
+                    widget.data.hashTag != null
                         ? SizedBox(
                             height: 10.0,
                           )
@@ -435,7 +435,7 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                           width: 5.0,
                         ),
                         Text(
-                          '${widget.data.audio_duration ?? "0"}s',
+                          '${widget.data.audioDuration ?? "0"}s',
                           style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: widget.fit.t(12.0),
@@ -451,11 +451,11 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                     SizedBox(
                       height: 10.0,
                     ),
-                    widget.data.is_campaign ?? false
+                    widget.data.isCampaign ?? false
                         ? Container(
                             padding: EdgeInsets.only(left: widget.fit.t(4.0), right: widget.fit.t(4.0)),
                             child: Text(
-                              '${widget.data.campaign_desc ?? ""}',
+                              '${widget.data.campaignDesc ?? ""}',
                               overflow: TextOverflow.ellipsis,
                               maxLines: 10,
                               style: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.normal, fontSize: widget.fit.t(12.0), color: appColor),
@@ -463,19 +463,19 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                             ),
                           )
                         : Container(),
-                    widget.data.is_campaign ?? false
+                    widget.data.isCampaign ?? false
                         ? SizedBox(
                             height: 10.0,
                           )
                         : Container(),
-                    widget.data.is_campaign ?? false
-                        ? widget.data.campaign_img.isEmpty
+                    widget.data.isCampaign ?? false
+                        ? widget.data.campaignImg.isEmpty
                             ? Container()
                             : Container(
                                 width: MediaQuery.of(context).size.width,
                                 decoration: BoxDecoration(color: colorWhite),
                                 child: CachedNetworkImage(
-                                  imageUrl: '${widget.data.campaign_img}',
+                                  imageUrl: '${widget.data.campaignImg}',
                                   imageBuilder: (context, imageProvider) => Container(
                                     width: MediaQuery.of(context).size.width,
                                     height: widget.fit.t(150.0),
@@ -498,7 +498,7 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                     SizedBox(
                       height: 10.0,
                     ),
-                    widget.data.is_campaign ?? false
+                    widget.data.isCampaign ?? false
                         ? Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -512,20 +512,20 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                                     children: <Widget>[
                                       Icon(
                                         Icons.thumb_up_alt_outlined,
-                                        color: widget.data.is_liked ? appColor : colorGrey2,
+                                        color: widget.data.isLiked ? appColor : colorGrey2,
                                         size: widget.fit.t(20.0),
                                       ),
                                       SizedBox(
                                         width: widget.fit.t(4.0),
                                       ),
                                       Text(
-                                        widget.data.n_likes > 0 ? '${widget.data.n_likes}' : '',
+                                        widget.data.nLikes > 0 ? '${widget.data.nLikes}' : '',
                                         style: TextStyle(
                                             fontFamily: 'Roboto',
                                             fontSize: widget.fit.t(12.0),
                                             fontWeight: FontWeight.w500,
                                             letterSpacing: 0.12,
-                                            color: widget.data.is_liked ? appColor : Color.fromRGBO(178, 178, 178, 1)),
+                                            color: widget.data.isLiked ? appColor : Color.fromRGBO(178, 178, 178, 1)),
                                       )
                                     ],
                                   ),
@@ -540,18 +540,18 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                                     children: <Widget>[
                                       Image.asset(
                                         '$ic_replies',
-                                        color: widget.data.is_commented ? appColor : colorGrey2,
+                                        color: widget.data.isCommented ? appColor : colorGrey2,
                                         width: widget.fit.t(20.0),
                                         height: widget.fit.t(20.0),
                                       ),
                                       Text(
-                                        widget.data.n_comments > 0 ? ' ${widget.data.n_comments}' : '',
+                                        widget.data.nComments > 0 ? ' ${widget.data.nComments}' : '',
                                         style: TextStyle(
                                           fontFamily: 'Roboto',
                                           fontSize: widget.fit.t(12.0),
                                           fontWeight: FontWeight.w500,
                                           letterSpacing: 0.12,
-                                          color: widget.data.is_commented ? appColor : Color.fromRGBO(178, 178, 178, 1),
+                                          color: widget.data.isCommented ? appColor : Color.fromRGBO(178, 178, 178, 1),
                                         ),
                                       )
                                     ],
@@ -567,18 +567,18 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                                     children: <Widget>[
                                       Image.asset(
                                         '$ic_shares',
-                                        color: widget.data.is_shared ? appColor : colorGrey2,
+                                        color: widget.data.isShared ? appColor : colorGrey2,
                                         width: widget.fit.t(20.0),
                                         height: widget.fit.t(20.0),
                                       ),
                                       Text(
-                                        widget.data.n_shares > 0 ? ' ${widget.data.n_shares}' : '',
+                                        widget.data.nShares > 0 ? ' ${widget.data.nShares}' : '',
                                         style: TextStyle(
                                             fontFamily: 'Roboto',
                                             fontSize: widget.fit.t(12.0),
                                             fontWeight: FontWeight.w500,
                                             letterSpacing: 0.12,
-                                            color: widget.data.is_shared ? appColor : Color.fromRGBO(178, 178, 178, 1)),
+                                            color: widget.data.isShared ? appColor : Color.fromRGBO(178, 178, 178, 1)),
                                       )
                                     ],
                                   ),
@@ -600,18 +600,18 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                                         children: <Widget>[
                                           Image.asset(
                                             '$ic_upvotes',
-                                            color: widget.data.is_liked ? appColor : colorGrey2,
+                                            color: widget.data.isLiked ? appColor : colorGrey2,
                                             width: widget.fit.t(20.0),
                                             height: widget.fit.t(20.0),
                                           ),
                                           Text(
-                                            widget.data.n_likes > 0 ? '${widget.data.n_likes}' : '',
+                                            widget.data.nLikes > 0 ? '${widget.data.nLikes}' : '',
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
                                                 fontSize: widget.fit.t(12.0),
                                                 fontWeight: FontWeight.w500,
                                                 letterSpacing: 0.12,
-                                                color: widget.data.is_liked ? appColor : Color.fromRGBO(178, 178, 178, 1)),
+                                                color: widget.data.isLiked ? appColor : Color.fromRGBO(178, 178, 178, 1)),
                                           )
                                         ],
                                       ),
@@ -625,18 +625,18 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                                         children: <Widget>[
                                           Image.asset(
                                             '$ic_downvotes',
-                                            color: widget.data.is_disliked ? appColor : colorGrey2,
+                                            color: widget.data.isDisliked ? appColor : colorGrey2,
                                             width: widget.fit.t(20.0),
                                             height: widget.fit.t(20.0),
                                           ),
                                           Text(
-                                            widget.data.n_dislikes > 0 ? ' ${widget.data.n_dislikes}' : '',
+                                            widget.data.nDislikes > 0 ? ' ${widget.data.nDislikes}' : '',
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
                                                 fontSize: widget.fit.t(12.0),
                                                 fontWeight: FontWeight.w500,
                                                 letterSpacing: 0.12,
-                                                color: widget.data.is_disliked ? appColor : Color.fromRGBO(178, 178, 178, 1)),
+                                                color: widget.data.isDisliked ? appColor : Color.fromRGBO(178, 178, 178, 1)),
                                           )
                                         ],
                                       ),
@@ -651,18 +651,18 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                                         children: <Widget>[
                                           Image.asset(
                                             '$ic_shares',
-                                            color: widget.data.is_shared ? appColor : colorGrey2,
+                                            color: widget.data.isShared ? appColor : colorGrey2,
                                             width: widget.fit.t(20.0),
                                             height: widget.fit.t(20.0),
                                           ),
                                           Text(
-                                            widget.data.n_shares > 0 ? ' ${widget.data.n_shares}' : '',
+                                            widget.data.nShares > 0 ? ' ${widget.data.nShares}' : '',
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
                                                 fontSize: widget.fit.t(12.0),
                                                 fontWeight: FontWeight.w500,
                                                 letterSpacing: 0.12,
-                                                color: widget.data.is_shared ? appColor : Color.fromRGBO(178, 178, 178, 1)),
+                                                color: widget.data.isShared ? appColor : Color.fromRGBO(178, 178, 178, 1)),
                                           )
                                         ],
                                       ),
@@ -683,18 +683,18 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                                         children: <Widget>[
                                           Image.asset(
                                             '$ic_upvotes',
-                                            color: widget.data.is_liked ? appColor : colorGrey2,
+                                            color: widget.data.isLiked ? appColor : colorGrey2,
                                             width: widget.fit.t(20.0),
                                             height: widget.fit.t(20.0),
                                           ),
                                           Text(
-                                            widget.data.n_likes > 0 ? '${widget.data.n_likes}' : '',
+                                            widget.data.nLikes > 0 ? '${widget.data.nLikes}' : '',
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
                                                 fontSize: widget.fit.t(12.0),
                                                 fontWeight: FontWeight.w500,
                                                 letterSpacing: 0.12,
-                                                color: widget.data.is_liked ? appColor : Color.fromRGBO(178, 178, 178, 1)),
+                                                color: widget.data.isLiked ? appColor : Color.fromRGBO(178, 178, 178, 1)),
                                           )
                                         ],
                                       ),
@@ -709,18 +709,18 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                                         children: <Widget>[
                                           Image.asset(
                                             '$ic_replies',
-                                            color: widget.data.is_commented ? appColor : colorGrey2,
+                                            color: widget.data.isCommented ? appColor : colorGrey2,
                                             width: widget.fit.t(20.0),
                                             height: widget.fit.t(20.0),
                                           ),
                                           Text(
-                                            widget.data.n_comments > 0 ? ' ${widget.data.n_comments}' : '',
+                                            widget.data.nComments > 0 ? ' ${widget.data.nComments}' : '',
                                             style: TextStyle(
                                               fontFamily: 'Roboto',
                                               fontSize: widget.fit.t(12.0),
                                               fontWeight: FontWeight.w500,
                                               letterSpacing: 0.12,
-                                              color: widget.data.is_commented ? appColor : Color.fromRGBO(178, 178, 178, 1),
+                                              color: widget.data.isCommented ? appColor : Color.fromRGBO(178, 178, 178, 1),
                                             ),
                                           )
                                         ],
@@ -735,18 +735,18 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                                         children: <Widget>[
                                           Image.asset(
                                             '$ic_downvotes',
-                                            color: widget.data.is_disliked ? appColor : colorGrey2,
+                                            color: widget.data.isDisliked ? appColor : colorGrey2,
                                             width: widget.fit.t(20.0),
                                             height: widget.fit.t(20.0),
                                           ),
                                           Text(
-                                            widget.data.n_dislikes > 0 ? ' ${widget.data.n_dislikes}' : '',
+                                            widget.data.nDislikes > 0 ? ' ${widget.data.nDislikes}' : '',
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
                                                 fontSize: widget.fit.t(12.0),
                                                 fontWeight: FontWeight.w500,
                                                 letterSpacing: 0.12,
-                                                color: widget.data.is_disliked ? appColor : Color.fromRGBO(178, 178, 178, 1)),
+                                                color: widget.data.isDisliked ? appColor : Color.fromRGBO(178, 178, 178, 1)),
                                           )
                                         ],
                                       ),
@@ -761,18 +761,18 @@ class _DashBoardListItemState extends State<DashBoardListItem> {
                                         children: <Widget>[
                                           Image.asset(
                                             '$ic_shares',
-                                            color: widget.data.is_shared ? appColor : colorGrey2,
+                                            color: widget.data.isShared ? appColor : colorGrey2,
                                             width: widget.fit.t(20.0),
                                             height: widget.fit.t(20.0),
                                           ),
                                           Text(
-                                            widget.data.n_shares > 0 ? ' ${widget.data.n_shares}' : '',
+                                            widget.data.nShares > 0 ? ' ${widget.data.nShares}' : '',
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
                                                 fontSize: widget.fit.t(12.0),
                                                 fontWeight: FontWeight.w500,
                                                 letterSpacing: 0.12,
-                                                color: widget.data.is_shared ? appColor : Color.fromRGBO(178, 178, 178, 1)),
+                                                color: widget.data.isShared ? appColor : Color.fromRGBO(178, 178, 178, 1)),
                                           )
                                         ],
                                       ),
